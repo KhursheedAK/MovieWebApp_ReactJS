@@ -4,7 +4,7 @@ import Search from '../components/Search/Search';
 import Pagination from '../components/Pagination/Pagination';
 
 export default function Cards() {
-  const [search, setSearch] = useState('spiderman');
+  const [search, setSearch] = useState('Batman');
   const [film, setFilm] = useState([]);
   const [loader, setLoader] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -27,7 +27,7 @@ export default function Cards() {
       try {
         setLoader(true);
 
-        const apiUrl = `https://www.omdbapi.com/?s=${query}&apikey=6df7d7f`;
+        const apiUrl = `https://www.omdbapi.com/?s=${query}&apikey=${import.meta.env.VITE_OMDB_KEY}`;
 
         const response = await fetch(apiUrl);
 
@@ -49,7 +49,24 @@ export default function Cards() {
   };
 
   useEffect(() => {
-    fetchMovies('spiderman');
+    const initialFetch = async () => {
+      try {
+        const response = await fetch(
+          `https://www.omdbapi.com/?s=batman&apikey=${import.meta.env.VITE_OMDB_KEY}`,
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const found = data.Response === 'True';
+          setFilm(found ? data.Search : []);
+          setNotFound(!found);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoader(false);
+      }
+    };
+    initialFetch();
   }, []);
 
   return (
@@ -65,7 +82,10 @@ export default function Cards() {
       ) : notFound ? (
         <div className="flex flex-col items-center justify-center gap-4 mt-10">
           <p className="text-6xl">🎬</p>
-          <h2 className="text-3xl text-white">No movies found for <span className="text-amber-300">your search</span></h2>
+          <h2 className="text-3xl text-white">
+            No movies found for{' '}
+            <span className="text-amber-300">your search</span>
+          </h2>
           <p className="text-gray-400 text-xl">Try a different title</p>
         </div>
       ) : (
