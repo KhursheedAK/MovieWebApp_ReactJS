@@ -21,14 +21,14 @@ export default function Cards() {
     setSearch(event.target.value);
   };
 
-  const fetchMovies = async () => {
-    if (search !== '') {
+  const fetchMovies = async (query: string) => {
+    if (query !== '') {
       try {
         setLoader(true);
 
         const apiUrl = import.meta.env.DEV
-          ? `/api/search?q=${search}`
-          : `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${search}`)}`;
+          ? `/api/search?q=${query}`
+          : `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${query}`)}`;
 
         const response = await fetch(apiUrl);
 
@@ -37,27 +37,25 @@ export default function Cards() {
           setFilm(data.description);
           setSearch('');
           setLoader(false);
+        } else {
+          setLoader(false);
         }
       } catch (err) {
         console.log(err);
+        setLoader(false);
       }
     }
   };
 
   useEffect(() => {
-    const loadMovies = async () => {
-      await fetchMovies();
-    };
-
-    loadMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchMovies('spiderman');
   }, []);
 
   return (
     <>
       <Search
         search={search}
-        onSearchClick={fetchMovies}
+        onSearchClick={() => fetchMovies(search)}
         handleSearch={handleSearch}
       />
 
