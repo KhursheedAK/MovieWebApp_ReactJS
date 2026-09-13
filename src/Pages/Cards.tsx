@@ -28,7 +28,7 @@ export default function Cards() {
 
         const apiUrl = import.meta.env.DEV
           ? `/api/search?q=${search}`
-          : `https://corsproxy.io/?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${search}`)}`;
+          : `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${search}`)}`;
 
         const response = await fetch(apiUrl);
 
