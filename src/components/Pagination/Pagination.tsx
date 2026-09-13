@@ -1,8 +1,14 @@
+interface PaginationProps {
+  totalPosts: number;
+  postsPerPage: number;
+  setCurrentPage: (page: number) => void;
+}
+
 export default function Pagination({
   totalPosts,
   postsPerPage,
   setCurrentPage,
-}) {
+}: PaginationProps) {
   const pages = [];
 
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
