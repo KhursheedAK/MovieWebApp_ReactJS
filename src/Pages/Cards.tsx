@@ -7,6 +7,7 @@ export default function Cards() {
   const [search, setSearch] = useState('spiderman');
   const [film, setFilm] = useState([]);
   const [loader, setLoader] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   // Pagination Parts
   const [currentpage, setCurrentPage] = useState(1);
@@ -32,7 +33,9 @@ export default function Cards() {
 
         if (response.ok) {
           const data = await response.json();
-          setFilm(data.Response === 'True' ? data.Search : []);
+          const found = data.Response === 'True';
+          setFilm(found ? data.Search : []);
+          setNotFound(!found);
           setSearch('');
           setLoader(false);
         } else {
@@ -59,6 +62,12 @@ export default function Cards() {
 
       {loader ? (
         <h1 className="text-4xl text-white"> LOADING DATA... </h1>
+      ) : notFound ? (
+        <div className="flex flex-col items-center justify-center gap-4 mt-10">
+          <p className="text-6xl">🎬</p>
+          <h2 className="text-3xl text-white">No movies found for <span className="text-amber-300">your search</span></h2>
+          <p className="text-gray-400 text-xl">Try a different title</p>
+        </div>
       ) : (
         <>
           <div className="grid grid-cols-3 gap-10 mb-2">

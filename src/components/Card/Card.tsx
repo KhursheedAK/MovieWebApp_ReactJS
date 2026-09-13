@@ -17,6 +17,7 @@ export default function Card({ movie }: CardProps) {
         <img
           className="md:max-w-110 lg:max-w-80 border rounded-2xl cursor-pointer transition-all duration-205 hover:scale-105"
           src={movie.Poster !== 'N/A' ? movie.Poster : `https://placehold.co/300x445?text=No+Image`}
+          onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/300x445?text=No+Image'; }}
           alt={movie.Title}
         />
       </div>
