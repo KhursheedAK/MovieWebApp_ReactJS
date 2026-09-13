@@ -3,8 +3,10 @@ import Card from '../components/Card/Card';
 import Search from '../components/Search/Search';
 import Pagination from '../components/Pagination/Pagination';
 
+const DEFAULT_SEARCH = 'Batman';
+
 export default function Cards() {
-  const [search, setSearch] = useState('Batman');
+  const [search, setSearch] = useState(DEFAULT_SEARCH);
   const [film, setFilm] = useState([]);
   const [loader, setLoader] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -52,7 +54,7 @@ export default function Cards() {
     const initialFetch = async () => {
       try {
         const response = await fetch(
-          `https://www.omdbapi.com/?s=batman&apikey=${import.meta.env.VITE_OMDB_KEY}`,
+          `https://www.omdbapi.com/?s=${DEFAULT_SEARCH}&apikey=${import.meta.env.VITE_OMDB_KEY}`,
         );
         if (response.ok) {
           const data = await response.json();
