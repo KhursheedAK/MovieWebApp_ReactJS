@@ -26,9 +26,11 @@ export default function Cards() {
       try {
         setLoader(true);
 
-        const response = await fetch(
-          `https://imdb.iamidiotareyoutoo.com/search?q=${search}`,
-        );
+        const apiUrl = import.meta.env.DEV
+          ? `/api/search?q=${search}`
+          : `https://corsproxy.io/?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${search}`)}`;
+
+        const response = await fetch(apiUrl);
 
         if (response.ok) {
           const data = await response.json();
