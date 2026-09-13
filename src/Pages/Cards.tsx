@@ -26,15 +26,13 @@ export default function Cards() {
       try {
         setLoader(true);
 
-        const apiUrl = import.meta.env.DEV
-          ? `/api/search?q=${query}`
-          : `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://imdb.iamidiotareyoutoo.com/search?q=${query}`)}`;
+        const apiUrl = `https://www.omdbapi.com/?s=${query}&apikey=6df7d7f`;
 
         const response = await fetch(apiUrl);
 
         if (response.ok) {
           const data = await response.json();
-          setFilm(data.description);
+          setFilm(data.Response === 'True' ? data.Search : []);
           setSearch('');
           setLoader(false);
         } else {
@@ -65,7 +63,7 @@ export default function Cards() {
         <>
           <div className="grid grid-cols-3 gap-10 mb-2">
             {currentPost.map((movie) => (
-              <Card key={movie['#IMDB_ID']} movie={movie} />
+              <Card key={movie['imdbID']} movie={movie} />
             ))}
           </div>
           <Pagination
