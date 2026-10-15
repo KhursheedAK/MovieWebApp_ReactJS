@@ -4,8 +4,11 @@ import Cards from './Pages/Cards';
 
 export default function App() {
   return (
-    <div className="mainContainer">
-      <Cards />
-    </div>
+    <>
+      <div className="backdrop" aria-hidden="true" />
+      <div className="mainContainer">
+        <Cards />
+      </div>
+    </>
   );
 }
